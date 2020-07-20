@@ -4,6 +4,8 @@ on:
     branches:
       - master
       - workflows
+  # release:
+  #   types: [published]
 
 jobs:
   test:
@@ -14,6 +16,7 @@ jobs:
         python-version: [2.7, 3.5, 3.8]
     steps:
       - uses: actions/checkout@v2
+        name: Check out the repo
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
@@ -22,9 +25,18 @@ jobs:
         run: pip install -r requirements.txt
       - name: Run tests
         run: python test/test_parsers.py
-  build:
-    name: Checking
+  push_to_registry:
+    name: Push Docker image to GitHub Packages
     runs-on: ubuntu-latest
     if: ${{github.ref == 'refs/heads/workflows'}}
     steps:
-      - run: echo 'OLOLO'
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Push to GitHub Packages
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          repository: evoja/docker-Git-Auto-Deploy/git-auto-deploy
+          tag_with_ref: true
