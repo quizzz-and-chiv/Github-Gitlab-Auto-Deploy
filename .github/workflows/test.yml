@@ -10,7 +10,8 @@ jobs:
     name: Testing
     runs-on: ubuntu-latest
     strategy:
-      python-version: [2.7, 3.5, 3.8.5]
+      matrix:
+        python-version: [2.7, 3.5, 3.8.5]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
