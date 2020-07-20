@@ -1,0 +1,51 @@
+#!/bin/bash
+
+NAME="git-auto-deploy"
+GAD_UID="git-auto-deploy"
+GAD_GID="git-auto-deploy"
+
+HOME_DIR="/etc/$NAME"
+DATA_DIR="/var/lib/$NAME"
+PID_DIR="/var/run/$NAME"
+PID_FILE="$PID_DIR/$NAME.pid"
+
+# Add user and group
+adduser --quiet --system --home $HOME_DIR --no-create-home --ingroup nogroup --disabled-password $GAD_UID
+addgroup --system $GAD_GID
+adduser $GAD_UID $GAD_GID
+
+# Create home dir
+mkdir -p $HOME_DIR
+mkdir -p $HOME_DIR/.ssh
+touch $HOME_DIR/.ssh/known_hosts
+
+# Generate SSL certificate if openssl is installed
+if [ -x "$(command -v openssl)" ]; then
+  openssl req -new -x509 -keyout $HOME_DIR/cert.pem -out $HOME_DIR/cert.pem -days 365 -nodes -subj "/C=/ST=/L=/O=Git Auto Deploy/OU=/CN=localhost"
+fi
+
+# Set permissions on home dirßß
+chown -R $GAD_UID:$GAD_GID $HOME_DIR
+chmod -R 750 $HOME_DIR
+
+# Create log file
+touch /var/log/$NAME.log
+chown $GAD_UID:$GAD_GID /var/log/$NAME.log
+chmod 750 /var/log/$NAME.log
+
+# Create data directory
+if [ ! -d "$DATA_DIR" ]; then
+    mkdir -p $DATA_DIR
+    chown -R $GAD_UID:$GAD_GID $DATA_DIR
+    chmod 750 $DATA_DIR
+fi
+
+# Create pid file
+if [ ! -d "$PID_DIR" ]; then
+    mkdir $PID_DIR
+    touch $PID_FILE
+    chown $GAD_UID:$GAD_GID $PID_DIR $PID_FILE
+    chmod 750 $PID_FILE
+fi
+
+update-rc.d $NAME defaults

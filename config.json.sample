@@ -1,0 +1,70 @@
+{
+  // HTTP server options
+  //"http-enabled": true,
+  //"http-host": "0.0.0.0",
+  //"http-port": 8001,
+
+  // HTTPS server options
+  //"https-enabled": false,
+  //"https-host": "0.0.0.0",
+  //"https-port": 8002,
+
+  // Web socket server options (used by web UI for real time updates)
+  //"wss-enabled": false,
+  //"wss-host": "0.0.0.0",
+  //"wss-port": 8003,
+
+  // Web user interface options
+  //"web-ui-enabled": false,
+  //"web-ui-username": null,
+  //"web-ui-password": null,
+  //"web-ui-whitelist": ["127.0.0.1"],
+
+  // TLS/SSL cert (necessary for HTTPS and web socket server to work)
+  //"ssl-key": null,  // If specified, holds the private key
+  //"ssl-cert": "cert.pem",  // Holds the public key or both the private and public keys
+
+  // File to store a copy of the console output
+  "log-file": "~/gitautodeploy.log",
+
+  // File to store the process id (pid)
+  "pid-file": "~/.gitautodeploy.pid",
+
+  // Record all log levels by default
+  "log-level": "INFO",
+
+  // Deploy commands that should be executed for all projects
+  //"global_deploy": [
+  //  "echo Deploy started!",
+  //  "echo Deploy completed!"
+  //],
+
+  "repositories": [
+    {
+      "url": "https://github.com/olipo186/Git-Auto-Deploy.git",
+      "branch": "master",
+      "remote": "origin",
+      "path": "~/repositories/Git-Auto-Deploy",
+      "deploy": "echo deploying"
+    },
+    {
+      "url": "https://github.com/github/gitignore",
+      "path": "~/repositories/gitignore"
+    },
+    {
+      "url": "git@gitlab.com:gitlab-org/gitlab-ce.git",
+      "path": "~/repositories/gitignore"
+    },
+    {
+      "url": "https://api.github.com/repos/olipo186/Git-Auto-Deploy",
+      "deploy": "echo deploying after pull request",
+      "filters": [
+        {
+          "type": "pull-request-filter",
+          "action": "closed",
+          "ref": "testing-branch"
+        }
+      ]
+    }
+  ]
+}
