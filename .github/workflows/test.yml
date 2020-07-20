@@ -25,6 +25,6 @@ jobs:
   check:
     name: Checking
     runs-on: ubuntu-latest
-    if: ${{github.ref == refs/heads/workflows}}
+    if: ${{github.ref == "refs/heads/workflows"}}
     steps:
       - run: echo 'OLOLO'
