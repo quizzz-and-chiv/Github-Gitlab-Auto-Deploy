@@ -22,9 +22,9 @@ jobs:
         run: pip install -r requirements.txt
       - name: Run tests
         run: python test/test_parsers.py
-  check:
+  build:
     name: Checking
     runs-on: ubuntu-latest
-    if: ${{github.ref == 'refs/heads/master'}}
+    if: ${{github.ref == 'refs/heads/workflows'}}
     steps:
       - run: echo 'OLOLO'
