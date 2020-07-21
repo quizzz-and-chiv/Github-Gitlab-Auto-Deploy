@@ -41,3 +41,5 @@ jobs:
           registry: docker.pkg.github.com
           repository: evoja/docker-git-auto-deploy/git-auto-deploy
           tag_with_ref: true
+          path: .
+          dockerfile: ./dockerimage/Dockerfile
