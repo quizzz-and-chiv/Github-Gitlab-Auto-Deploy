@@ -1,4 +1,5 @@
 FROM alpine:3.11.6
+LABEL description="Image description"
 
 RUN apk --update add python3 && pip3 install --upgrade pip
 #     apt-get -y install openssh-client
