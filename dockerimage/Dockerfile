@@ -1,9 +1,6 @@
 FROM alpine:3.11.6
 
-ENV \
-    GAD_USER=gad               \
-    GAD_UID=1001               \
-    DOCKER_GID=999
+ENV GAD_USER=gad GAD_UID=1001
 
 RUN apk --no-cache --update add python3 dumb-init && \
     pip3 install --upgrade pip && \
@@ -11,7 +8,6 @@ RUN apk --no-cache --update add python3 dumb-init && \
     adduser -s /bin/sh -D -u $GAD_UID $GAD_USER && \
     mkdir /home/$GAD_USER/.ssh && chmod 600 /home/$GAD_USER/.ssh && \
     chown -R $GAD_USER:$GAD_USER /home/$GAD_USER && \
-    addgroup -g ${DOCKER_GID} docker && addgroup ${GAD_USER} docker && \
     rm -rf /var/cache/apk/*
 #     apt-get -y install openssh-client # not sure if we need this
 COPY requirements.txt .
