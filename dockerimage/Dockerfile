@@ -5,7 +5,7 @@ ENV \
     GAD_UID=1001               \
     DOCKER_GID=999
 
-RUN apk --no-cache --update add python3 && \
+RUN apk --no-cache --update add python3 dumb-init && \
     pip3 install --upgrade pip && \
     mkdir -p /home/$GAD_USER && \
     adduser -s /bin/sh -D -u $GAD_UID $GAD_USER && \
@@ -20,4 +20,5 @@ RUN pip3 install -r requirements.txt
 USER $GAD_USER
 WORKDIR /home/$GAD_USER
 
-ENTRYPOINT ["/env/bin/python", "-u", "GitAutoDeploy.py", "--ssh-keyscan"]
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+CMD ["/env/bin/python", "-u", "GitAutoDeploy.py", "--ssh-keyscan"]
