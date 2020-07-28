@@ -15,3 +15,4 @@ USER $GAD_USER
 COPY my.config.json ./config.json
 
 CMD ["--ssh-keyscan"]
+EXPOSE 8080
