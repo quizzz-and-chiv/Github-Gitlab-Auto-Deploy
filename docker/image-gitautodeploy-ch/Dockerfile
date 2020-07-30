@@ -7,7 +7,7 @@ LABEL maintainer="Chivorotkiv <git@chiv.info>"
 
 ENV GAD_USER=gad GAD_UID=1001
 
-RUN apk --no-cache --update add su-exec && \
+RUN apk --no-cache --update add su-exec dumb-init && \
     mkdir -p /home/$GAD_USER && \
     adduser -s /bin/sh -D -u $GAD_UID $GAD_USER && \
     chown -R $GAD_USER:$GAD_USER /home/$GAD_USER && \

@@ -42,4 +42,7 @@ it's addef for example only.
 
     cd docker/example/base-images-usage/image
     docker build -t the-example -f gad-ch-based.Dockerfile .
-    docker run --init --rm -p 8080:8080 the-example
+    docker run --rm -p 8080:8080 the-example
+
+You don't need to use [--init](https://docs.docker.com/engine/reference/run/#specify-an-init-process) with this image
+because it enforses to use [dumb-init](https://github.com/Yelp/dumb-init).
