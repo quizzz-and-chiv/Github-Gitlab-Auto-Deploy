@@ -7,6 +7,7 @@ on:
     tags:
       - v0.*
       - dv0.*
+      - dv/0.*
 
 jobs:
 
@@ -50,9 +51,9 @@ jobs:
           echo ::set-env name=IMAGE_TAG::$(./.github/workflows/docker-tag.sh ${{github.ref}})
       - name: Calculate root image tag
         if: ${{ startsWith(github.ref, 'refs/tags/dv') }}
-        run: echo ::set-env name=ROOT_TAG::$(./.github/workflows/root-tag.sh $${{env.IMAGE_TAG}})
+        run: echo ::set-env name=ROOT_TAG::$(./.github/workflows/root-tag.sh ${{env.IMAGE_TAG}})
 
-      - name: Push "git-auto-deploy" to GitHub Packages
+      - name: Build "git-auto-deploy" and push to GitHub Packages
         uses: docker/build-push-action@v1
         with:
           username: ${{ github.actor }}
@@ -64,7 +65,7 @@ jobs:
           tags: ${{env.IMAGE_TAG}}
           push: ${{env.IMAGE_PUSH}}
 
-      - name: Push "gitautodeploy-ch" to GitHub Packages
+      - name: Build "gitautodeploy-ch" and push to GitHub Packages
         uses: docker/build-push-action@v1
         with:
           username: ${{ github.actor }}
@@ -78,7 +79,7 @@ jobs:
           build_args: TAG=${{env.IMAGE_TAG}},REPO=${{env.IMAGE_REPO}}
           push: ${{env.IMAGE_PUSH}}
 
-      - name: Push ROOT based "gitautodeploy-ch" to GitHub Packages
+      - name: Build ROOT based "gitautodeploy-ch" and push to GitHub Packages
         if: ${{'false' == env.IS_ROOT}}
         uses: docker/build-push-action@v1
         with:
