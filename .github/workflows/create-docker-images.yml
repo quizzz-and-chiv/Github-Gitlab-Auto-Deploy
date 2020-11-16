@@ -47,49 +47,63 @@ jobs:
 
       - name: Calculate environments
         run: |
-          echo ::set-env name=IMAGE_REPO::$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')
-          echo ::set-env name=IMAGE_TAG::$(./.github/workflows/docker-tag.sh ${{github.ref}})
+          echo IMAGE_REPO=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
+          echo IMAGE_TAG=$(./.github/workflows/docker-tag.sh ${{github.ref}}) >> $GITHUB_ENV
+
       - name: Calculate root image tag
         if: ${{ startsWith(github.ref, 'refs/tags/dv') }}
-        run: echo ::set-env name=ROOT_TAG::$(./.github/workflows/root-tag.sh ${{env.IMAGE_TAG}})
+        run: echo ROOT_TAG=$(./.github/workflows/root-tag.sh ${{env.IMAGE_TAG}}) >> $GITHUB_ENV
 
-      - name: Build "git-auto-deploy" and push to GitHub Packages
-        uses: docker/build-push-action@v1
-        with:
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          registry: docker.pkg.github.com
-          repository: ${{env.IMAGE_REPO}}/git-auto-deploy
-          dockerfile: docker/image-gitautodeploy/Dockerfile
-          tag_with_ref: false
-          tags: ${{env.IMAGE_TAG}}
-          push: ${{env.IMAGE_PUSH}}
+      - name: Calculate images full names
+        run: |
+          echo IMAGE_GAD=docker.pkg.github.com/$IMAGE_REPO/git-auto-deploy:$IMAGE_TAG >> $GITHUB_ENV
+          echo IMAGE_GAD_CH=docker.pkg.github.com/$IMAGE_REPO/gitautodeploy-ch:$IMAGE_TAG >> $GITHUB_ENV
+          echo IMAGE_GAD_CH_ROOT=docker.pkg.github.com/$IMAGE_REPO/gitautodeploy-ch:${{env.ROOT_PREFIX}}$IMAGE_TAG >> $GITHUB_ENV
 
-      - name: Build "gitautodeploy-ch" and push to GitHub Packages
-        uses: docker/build-push-action@v1
-        with:
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          registry: docker.pkg.github.com
-          repository: ${{env.IMAGE_REPO}}/gitautodeploy-ch
-          path: docker/image-gitautodeploy-ch
-          dockerfile: docker/image-gitautodeploy-ch/Dockerfile
-          tag_with_ref: false
-          tags: ${{env.IMAGE_TAG}}
-          build_args: TAG=${{env.IMAGE_TAG}},REPO=${{env.IMAGE_REPO}}
-          push: ${{env.IMAGE_PUSH}}
+      - name: Login to GitHub Packages Docker Registry
+        run: |
+          docker login docker.pkg.github.com -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build ROOT based "gitautodeploy-ch" and push to GitHub Packages
+      - name: Build "git-auto-deploy"
+        run: |
+          docker build \
+              --rm \
+              -f docker/image-gitautodeploy/Dockerfile \
+              -t $IMAGE_GAD \
+              .
+
+      - name: Build "gitautodeploy-ch"
+        run: |
+          docker build \
+              --rm \
+              -f docker/image-gitautodeploy-ch/Dockerfile \
+              -t $IMAGE_GAD_CH \
+              --build-arg TAG=$IMAGE_TAG \
+              --build-arg REPO=$IMAGE_REPO \
+              docker/image-gitautodeploy-ch
+
+      - name: Build ROOT based "gitautodeploy-ch"
         if: ${{'false' == env.IS_ROOT}}
-        uses: docker/build-push-action@v1
-        with:
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          registry: docker.pkg.github.com
-          repository: ${{env.IMAGE_REPO}}/gitautodeploy-ch
-          path: docker/image-gitautodeploy-ch
-          dockerfile: docker/image-gitautodeploy-ch/Dockerfile
-          tag_with_ref: false
-          tags: ${{env.ROOT_PREFIX}}${{env.IMAGE_TAG}}
-          build_args: TAG=${{env.ROOT_TAG}},REPO=${{env.ROOT_REPO}}
-          push: ${{env.IMAGE_PUSH}}
+        run: |
+          docker build \
+              --rm \
+              -f docker/image-gitautodeploy-ch/Dockerfile \
+              -t $IMAGE_GAD_CH_ROOT \
+              --build-arg TAG=${{env.ROOT_TAG}} \
+              --build-arg REPO=${{env.ROOT_REPO}} \
+              docker/image-gitautodeploy-ch
+
+      - name: Push "git-auto-deploy" to GitHub Packages
+        if: ${{ env.IMAGE_PUSH == 'true' }}
+        run: |
+          docker push $IMAGE_GAD
+
+      - name: Push "gitautodeploy-ch" to GitHub Packages
+        if: ${{ env.IMAGE_PUSH == 'true' }}
+        run: |
+          docker push $IMAGE_GAD_CH
+
+      - name: Push ROOT based "gitautodeploy-ch" to GitHub Packages
+        if: ${{ env.IMAGE_PUSH == 'true' }}
+        run: |
+          docker push $IMAGE_GAD_CH_ROOT
