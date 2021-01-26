@@ -1,15 +1,50 @@
 # GAD in docker
 ## What is this fork about?
 
-This forks presents opinionated docker image to use GAD:
+The fork presents opinionated docker image to use GAD:
 
-[image-gitautodeploy-ch](./docker/image-gitautodeploy-ch/README.md)
+[image-gitautodeploy-ch](./docker/image-gitautodeploy-ch)
+
+## Packages
+
+#### [git-auto-deploy](https://github.com/evoja/docker-Git-Auto-Deploy/packages/322255)
+It's the same [as the package of the original repo](https://github.com/olipo186/Git-Auto-Deploy/packages/335006). However some images can be based on code that doesn't exist in the original.
+
+There are following versions:
+
+* [latest](https://github.com/evoja/docker-Git-Auto-Deploy/packages/322255?version=latest) is built from `master` of current fork
+* `v*` are built from tagged commits of the original repo
+* `dv*` are built from `dv*` tags of current fork, I suppose these tags don't appear in the original repo.
+* `dev`, `dev*`, `*-push`, `workflows` are development images, don't use them.
+
+
+#### [gitautodeploy-ch](https://github.com/evoja/docker-Git-Auto-Deploy/packages/332130)
+
+It is an opinionated docker image based on [this Dockerfile](https://github.com/evoja/docker-Git-Auto-Deploy/tree/master/docker/image-gitautodeploy-ch).
+
+Notice that it has `FROM:` directive so it uses `git-auto-deploy` image as a parent. But there are two versions of `git-auto-deploy`:
+* that is built in the original repo
+* that is built in this fork
+
+When `gitautodeploy-ch` image is based on an image from the original repo its version is tagged with `olipo186-` prefix. When it's not prefixed then it's based on a parent that is built here.
+
+There are following versions:
+
+* [latest](https://github.com/evoja/docker-Git-Auto-Deploy/packages/332130?version=latest) is built in master
+* `dv*` are built in a tagged commit of this fork
+* `dev*`, `*-push` are development images, don't use them
+* `olipo186-*` all is the same as above but images are based on a parent that is [built in the original repo](https://github.com/olipo186/Git-Auto-Deploy/packages/335006).
+
+#### [gitautodeploy-python2-base](https://github.com/evoja/docker-Git-Auto-Deploy/packages/330060)
+
+It is a development artifact. Don't use it
+
 
 ## How the repo is organized
 
 There are following branches:
 
-* [olipo](https://github.com/evoja/docker-Git-Auto-Deploy/tree/olipo): should always look to [master](https://github.com/olipo186/Git-Auto-Deploy/tree/master/) of the original repo.
+* [olipo](https://github.com/evoja/docker-Git-Auto-Deploy/tree/olipo): should always be synced to [master](https://github.com/olipo186/Git-Auto-Deploy/tree/master/) of the original repo.
 * [to-olipo](https://github.com/evoja/docker-Git-Auto-Deploy/tree/to-olipo), [dev-to-olipo](https://github.com/evoja/docker-Git-Auto-Deploy/tree/dev-to-olipo): contain changes to be pushed to the original project.
 * [master](https://github.com/evoja/docker-Git-Auto-Deploy/tree/master/), [dev](https://github.com/evoja/docker-Git-Auto-Deploy/tree/dev/): contain changes that probably never be pushed to the original repo.
 
