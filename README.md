@@ -1,4 +1,24 @@
+# GAD in docker
+## What is this fork about?
+
+This forks presents opinionated docker image to use GAD:
+
+[image-gitautodeploy-ch](./docker/image-gitautodeploy-ch/README.md)
+
+## How the repo is organized
+
+There are following branches:
+
+* [olipo](https://github.com/evoja/docker-Git-Auto-Deploy/tree/olipo): should always look to [master](https://github.com/olipo186/Git-Auto-Deploy/tree/master/) of the original repo.
+* [to-olipo](https://github.com/evoja/docker-Git-Auto-Deploy/tree/to-olipo), [dev-to-olipo](https://github.com/evoja/docker-Git-Auto-Deploy/tree/dev-to-olipo): contain changes to be pushed to the original project.
+* [master](https://github.com/evoja/docker-Git-Auto-Deploy/tree/master/), [dev](https://github.com/evoja/docker-Git-Auto-Deploy/tree/dev/): contain changes that probably never be pushed to the original repo.
+
+----------------------------------
+
+# Original GAD project README:
+
 [![Build Status](https://travis-ci.org/olipo186/Git-Auto-Deploy.svg?branch=master)](https://travis-ci.org/olipo186/Git-Auto-Deploy)
+
 # What is it?
 
 Git-Auto-Deploy consists of a small HTTP server that listens for Webhook requests sent from GitHub, GitLab or Bitbucket servers. This application allows you to continuously and automatically deploy your projects each time you push new commits to your repository.</p>
