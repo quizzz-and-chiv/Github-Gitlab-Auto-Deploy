@@ -82,6 +82,16 @@ jobs:
               --build-arg REPO=$IMAGE_REPO \
               docker/image-gitautodeploy-ch
 
+      - name: Push "git-auto-deploy" to GitHub Packages
+        if: ${{ env.IMAGE_PUSH == 'true' }}
+        run: |
+          docker push $IMAGE_GAD
+
+      - name: Push "gitautodeploy-ch" to GitHub Packages
+        if: ${{ env.IMAGE_PUSH == 'true' }}
+        run: |
+          docker push $IMAGE_GAD_CH
+
       - name: Build ROOT based "gitautodeploy-ch"
         if: ${{'false' == env.IS_ROOT}}
         run: |
@@ -92,16 +102,6 @@ jobs:
               --build-arg TAG=${{env.ROOT_TAG}} \
               --build-arg REPO=${{env.ROOT_REPO}} \
               docker/image-gitautodeploy-ch
-
-      - name: Push "git-auto-deploy" to GitHub Packages
-        if: ${{ env.IMAGE_PUSH == 'true' }}
-        run: |
-          docker push $IMAGE_GAD
-
-      - name: Push "gitautodeploy-ch" to GitHub Packages
-        if: ${{ env.IMAGE_PUSH == 'true' }}
-        run: |
-          docker push $IMAGE_GAD_CH
 
       - name: Push ROOT based "gitautodeploy-ch" to GitHub Packages
         if: ${{ env.IMAGE_PUSH == 'true' }}
