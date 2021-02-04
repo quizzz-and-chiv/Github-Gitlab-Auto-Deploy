@@ -42,6 +42,7 @@ Repository configurations are comprised of the following elements:
  - **path**: Path to clone the repository to. If omitted, the repository won't
    be cloned, only the deploy scripts will be executed.
  - **deploy**: A command to be executed. If `path` is set, the command is 
+ - **skip-submodules**: a boolean flag that requires to omit `--recursive` on clone and update. Default `false`.
    executed after a successfull `pull`.
  - **payload-filter**: A list of inclusive filters/rules that is applied to the request body of incoming web hook requests and determines whether the deploy command should be executed or not. See section *Filters* for more details.
  - **header-filter**: A set of inclusive filters/rules that is applied to the request header of incoming web hook requests and determines whether the deploy command should be executed or not. See section *Filters* for more details.
