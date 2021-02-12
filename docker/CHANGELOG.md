@@ -7,12 +7,16 @@
 ##### Removed
 ##### Fixed
 ##### Security
+##### Broken
 
 
 
 
 
 ### dv0
+#### [dv0.17-03] - [2021-02-12][c-dv0.17-03]
+##### Fixed
+* Make `skip-submoduels` flag optional.
 
 #### [dv0.17-02] - [2021-02-04][c-dv0.17-02]
 ##### Added
@@ -28,7 +32,8 @@
 * Use new way of setting local environments in GitHub Actions instead. The old way is deprecated.
 * Specify `get-pip` version because the default script doesn't support Python 2 anymore.
 
-
+##### Broken
+* `skip-submodules` is not optional that's why it breaks old configuration.
 
 
 
@@ -73,8 +78,10 @@ Changes [were merged](https://github.com/olipo186/Git-Auto-Deploy/pull/251) to [
 ------------
 Changelog file follows [this convention](https://keepachangelog.com/)
 
-[unreleased-dev]: https://github.com/evoja/docker-Git-Auto-Deploy/compare/dv/0.17-02...dev
-[unreleased]: https://github.com/evoja/docker-Git-Auto-Deploy/compare/dv/0.17-02...master
+[unreleased-dev]: https://github.com/evoja/docker-Git-Auto-Deploy/compare/dv/0.17-03...dev
+[unreleased]: https://github.com/evoja/docker-Git-Auto-Deploy/compare/dv/0.17-03...master
+[c-dv0.17-03]: https://github.com/evoja/docker-Git-Auto-Deploy/compare/dv/0.17-02...dv/0.17-03
+[dv0.17-03]: https://github.com/evoja/docker-Git-Auto-Deploy/tree/dv/0.17-03
 [c-dv0.17-02]: https://github.com/evoja/docker-Git-Auto-Deploy/compare/dv/0.17-01...dv/0.17-02
 [dv0.17-02]: https://github.com/evoja/docker-Git-Auto-Deploy/tree/dv/0.17-02
 [c-dv0.17-01]: https://github.com/evoja/docker-Git-Auto-Deploy/compare/dv0.17...dv/0.17-01

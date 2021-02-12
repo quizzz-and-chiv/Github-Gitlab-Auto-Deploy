@@ -48,6 +48,10 @@ There are following branches:
 * [to-olipo](https://github.com/evoja/docker-Git-Auto-Deploy/tree/to-olipo), [dev-to-olipo](https://github.com/evoja/docker-Git-Auto-Deploy/tree/dev-to-olipo): contain changes to be pushed to the original project.
 * [master](https://github.com/evoja/docker-Git-Auto-Deploy/tree/master/), [dev](https://github.com/evoja/docker-Git-Auto-Deploy/tree/dev/): contain changes that probably never be pushed to the original repo.
 
+## CHANGELOG
+
+Docker related changelog is in [CHANGELOG.md](docker/CHANGELOG.md).
+
 ----------------------------------
 
 # Original GAD project README:
